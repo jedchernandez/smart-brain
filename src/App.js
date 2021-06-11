@@ -1,13 +1,14 @@
-import Navigation from './components/Navigation/Navigation'
-import 'tachyons'
-import './App.css';
+import Navigation from "./components/Navigation/Navigation";
+import Logo from "./components/Logo/Logo";
+import "tachyons";
+import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <Navigation/>
-      {/* {<Logo/>
-      <ImageLinkForm/>
+      <Navigation />
+      <Logo />
+      {/*<ImageLinkForm/>
       <FaceRecognition/>} */}
     </div>
   );
