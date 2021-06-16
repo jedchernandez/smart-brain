@@ -18,16 +18,18 @@ class SignIn extends Component {
   };
 
   onSubmitSignIn = async () => {
+    const { signInEmail, signInPassword } = this.state;
     const res = await fetch("http://localhost:3000/signin", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: this.state.signInEmail,
-        password: this.state.signInPassword,
+        email: signInEmail,
+        password: signInPassword,
       }),
     });
-    const data = await res.json();
-    if (data === "success") {
+    const user = await res.json();
+    if (user.id) {
+      this.props.loadUser(user);
       this.props.onRouteChange("home");
     }
   };
