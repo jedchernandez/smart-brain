@@ -74,12 +74,11 @@ app.post("/register", (req, res) => {
     .then((user) => {
       res.json(user[0]);
     })
-    .catch((err) => res.status(400).json("unable to register"));
+    .catch(() => res.status(400).json("unable to register"));
 });
 
 app.get("/profile/:id", (req, res) => {
   const { id } = req.params;
-  let found = false;
   db.select("*")
     .from("users")
     .where({ id })
@@ -90,22 +89,19 @@ app.get("/profile/:id", (req, res) => {
         res.status(400).json("Not found");
       }
     })
-    .catch((err) => res.status(400).json("error geting user"));
+    .catch(() => res.status(400).json("error geting user"));
 });
 
 app.put("/image", (req, res) => {
   const { id } = req.body;
-  let found = false;
-  database.users.forEach((user) => {
-    if (user.id === id) {
-      found = true;
-      user.entries++;
-      return res.json(user.entries);
-    }
-  });
-  if (!found) {
-    res.status(400).json("not found");
-  }
+  db("users")
+    .where("id", "=", id)
+    .increment("entries", 1)
+    .returning("entries")
+    .then((entries) => {
+      res.json(entries[0]);
+    })
+    .catch(() => res.status(400).json("unable to get entries"));
 });
 
 app.listen(port, () => {
